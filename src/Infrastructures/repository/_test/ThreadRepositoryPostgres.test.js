@@ -51,4 +51,23 @@ describe('ThreadRepositoryPostgres', () => {
       ).rejects.toThrowError(NotFoundError);
     });
   });
+  describe('getThreadById function', () => {
+    it('should return thread', async () => {
+      const thread = await ThreadsTableTestHelper.addThread({});
+      // Arrange
+      const fakeIdGenerator = () => '123'; // stub!
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action & Assert
+      await expect(
+        threadRepositoryPostgres.getThreadById('thread-123'),
+      ).resolves.toEqual({
+        id: 'thread-123',
+        title: 'title',
+        body: 'body',
+        date: thread.date,
+        username: 'dicoding',
+      });
+    });
+  });
 });

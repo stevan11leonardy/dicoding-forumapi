@@ -8,6 +8,17 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     this._idGenerator = idGenerator;
   }
 
+  async getThreadById(threadId) {
+    const query = {
+      text: 'SELECT threads.id, title, body, date, username FROM threads INNER JOIN users ON threads.owner_id = users.id where threads.id = $1',
+      values: [threadId],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0];
+  }
+
   async checkAvailabilityThread(threadId) {
     const query = {
       text: 'SELECT id FROM threads where id = $1',

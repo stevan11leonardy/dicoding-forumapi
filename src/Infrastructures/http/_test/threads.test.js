@@ -64,6 +64,23 @@ describe('/threads endpoint', () => {
       threadId = responseJson.data.addedThread.id;
     });
   });
+
+  describe('when GET /threads/{threadId}', () => {
+    it('should response 200 and return status success', async () => {
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.data.thread).toBeDefined();
+    });
+  });
+
   describe('when POST /threads/{theardId}/comments', () => {
     it('should response 201 and persisted comment', async () => {
       const requestPayload = {

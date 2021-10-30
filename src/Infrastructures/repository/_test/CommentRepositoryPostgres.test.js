@@ -103,4 +103,16 @@ describe('CommentRepositoryPostgres', () => {
         .not.toThrowError(AuthorizationError);
     });
   });
+
+  describe('getCommentsByThreadId function', () => {
+    it('should return thread comments', async () => {
+      await CommentsTableTestHelper.addComment({});
+
+      const fakeIdGenerator = () => '123'; // stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+
+      const comments = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
+      expect(comments).toHaveLength(1);
+    });
+  });
 });
