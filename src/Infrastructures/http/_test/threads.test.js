@@ -9,6 +9,7 @@ describe('/threads endpoint', () => {
   let server = null;
   let accessToken = null;
   let threadId = null;
+  let commentId = null;
 
   afterAll(async () => {
     await UsersTableTestHelper.cleanTable();
@@ -19,7 +20,6 @@ describe('/threads endpoint', () => {
 
   beforeAll(async () => {
     server = await createServer(container);
-    // Action
     await server.inject({
       method: 'POST',
       url: '/users',
@@ -42,7 +42,6 @@ describe('/threads endpoint', () => {
 
   describe('when POST /threads', () => {
     it('should response 201 and persisted thread', async () => {
-      // Arrange
       const requestPayload = {
         title: 'title',
         body: 'body',
@@ -57,7 +56,6 @@ describe('/threads endpoint', () => {
         },
       });
 
-      // Assert
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
@@ -68,7 +66,6 @@ describe('/threads endpoint', () => {
   });
   describe('when POST /threads/{theardId}/comments', () => {
     it('should response 201 and persisted comment', async () => {
-      // Arrange
       const requestPayload = {
         content: 'content',
       };
@@ -82,11 +79,28 @@ describe('/threads endpoint', () => {
         },
       });
 
-      // Assert
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.addedComment).toBeDefined();
+
+      commentId = responseJson.data.addedComment.id;
+    });
+  });
+
+  describe('when DELETE /threads/{theardId}/comments', () => {
+    it('should response 200 and return status success', async () => {
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/${threadId}/comments/${commentId}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
     });
   });
 });
