@@ -18,7 +18,7 @@ class NewThread {
       throw new Error('NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof title !== 'string' || typeof body !== 'string') {
+    if (typeof title !== 'string' || typeof body !== 'string' || typeof ownerId !== 'string') {
       throw new Error('NEW_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
