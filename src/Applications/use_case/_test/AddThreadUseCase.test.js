@@ -1,5 +1,4 @@
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
-const Thread = require('../../../Domains/threads/entities/Thread');
 const AddThreadUseCase = require('../AddThreadUseCase');
 const NewThread = require('../../../Domains/threads/entities/NewThread');
 
@@ -11,14 +10,11 @@ describe('AddThreadUseCase', () => {
       body: 'body',
       ownerId: 'ownerId',
     };
-    const expectedThread = new Thread({
+    const expectedThread = {
       id: 'thread-123',
       title: useCasePayload.title,
-      body: useCasePayload.body,
-      username: 'username',
-      date: new Date().toISOString(),
-      comments: [],
-    });
+      owner: useCasePayload.ownerId,
+    };
 
     /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();

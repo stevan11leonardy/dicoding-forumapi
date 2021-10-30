@@ -17,12 +17,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       values: [id, ownerId, title, body, date],
     };
 
-    const result = await this._pool.query(query);
-
-    const queryUsername = {
-      text: 'select username from users where id = $1',
-      values: [ownerId],
-    };
+    await this._pool.query(query);
 
     return {
       id,
