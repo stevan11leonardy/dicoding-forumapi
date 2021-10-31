@@ -10,8 +10,6 @@ class GetThreadUseCase {
     const thread = await this._threadRepository.getThreadById(useCasePayload.threadId);
     const comments = await this._commentRepository.getCommentsByThreadId(useCasePayload.threadId);
 
-    console.log();
-
     return {
       ...thread,
       comments: (await Promise.all(comments.map(async (comment) => {
