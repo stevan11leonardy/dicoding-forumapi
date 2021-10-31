@@ -10,6 +10,7 @@ describe('/threads endpoint', () => {
   let accessToken = null;
   let threadId = null;
   let commentId = null;
+  let replyId = null;
 
   afterAll(async () => {
     await UsersTableTestHelper.cleanTable();
@@ -110,6 +111,46 @@ describe('/threads endpoint', () => {
       const response = await server.inject({
         method: 'DELETE',
         url: `/threads/${threadId}/comments/${commentId}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+    });
+  });
+
+  describe('when POST /threads/{theardId}/comments/{commentId}/replies', () => {
+    it('should response 201 and persisted reply', async () => {
+      const requestPayload = {
+        content: 'content',
+      };
+
+      const response = await server.inject({
+        method: 'POST',
+        url: `/threads/${threadId}/comments/${commentId}/replies`,
+        payload: requestPayload,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(201);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.addedReply).toBeDefined();
+
+      replyId = responseJson.data.addedReply.id;
+    });
+  });
+
+  describe('when DELETE /threads/{theardId}/comments/{commentId}/replies/{replyId}', () => {
+    it('should response 200 and return status success', async () => {
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/${threadId}/comments/${commentId}/replies/${replyId}`,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

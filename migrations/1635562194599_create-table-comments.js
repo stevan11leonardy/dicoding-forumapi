@@ -21,7 +21,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     date: {
-      type: 'DATE',
+      type: 'TIMESTAMP',
       notNull: true,
     },
     is_delete: {
@@ -43,7 +43,7 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropConstraint('threads', 'fk_comments.threads.id');
-  pgm.dropConstraint('threads', 'fk_comments.users.id');
-  pgm.dropTable('threads');
+  pgm.dropConstraint('comments', 'fk_comments.threads.id');
+  pgm.dropConstraint('comments', 'fk_comments.users.id');
+  pgm.dropTable('comments');
 };

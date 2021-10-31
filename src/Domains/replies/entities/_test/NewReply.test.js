@@ -1,6 +1,6 @@
-const NewComment = require('../NewComment');
+const NewReply = require('../NewReply');
 
-describe('NewComment entities', () => {
+describe('NewReply entities', () => {
   it('should throw error when not contain owner id', () => {
     // Arrange
     const payload = {
@@ -8,7 +8,7 @@ describe('NewComment entities', () => {
     };
 
     // Action & Assert
-    expect(() => new NewComment(payload)).toThrowError('NEW_COMMENT.NOT_LOGIN');
+    expect(() => new NewReply(payload)).toThrowError('NEW_REPLY.NOT_LOGIN');
   });
   it('should throw error when payload not contain needed property', () => {
     // Arrange
@@ -17,7 +17,7 @@ describe('NewComment entities', () => {
     };
 
     // Action & Assert
-    expect(() => new NewComment(payload)).toThrowError('NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
+    expect(() => new NewReply(payload)).toThrowError('NEW_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
   it('should throw error when payload not meet data type specification', () => {
@@ -25,28 +25,28 @@ describe('NewComment entities', () => {
     const payload = {
       content: 123,
       ownerId: 'title',
-      threadId: 'threadId',
+      commentId: 'commentId',
     };
 
     // Action & Assert
-    expect(() => new NewComment(payload)).toThrowError('NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new NewReply(payload)).toThrowError('NEW_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it('should create NewComment entities correctly', () => {
+  it('should create NewReply entities correctly', () => {
     // Arrange
     const payload = {
       content: 'content',
       ownerId: 'ownerId',
-      threadId: 'threadId',
+      commentId: 'commentId',
     };
 
     // Action
-    const newComment = new NewComment(payload);
+    const newComment = new NewReply(payload);
 
     // Assert
-    expect(newComment).toBeInstanceOf(NewComment);
+    expect(newComment).toBeInstanceOf(NewReply);
     expect(newComment.content).toEqual(payload.content);
     expect(newComment.ownerId).toEqual(payload.ownerId);
-    expect(newComment.threadId).toEqual(payload.threadId);
+    expect(newComment.commentId).toEqual(payload.commentId);
   });
 });
