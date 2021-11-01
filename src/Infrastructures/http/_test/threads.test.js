@@ -126,7 +126,7 @@ describe('/threads endpoint', () => {
     it('should response 201 and persisted like', async () => {
       const response = await server.inject({
         method: 'PUT',
-        url: `/threads/${threadId}/comments/${commentId}/replies`,
+        url: `/threads/${threadId}/comments/${commentId}/likes`,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

@@ -1,8 +1,11 @@
 class GetThreadUseCase {
-  constructor({ threadRepository, commentRepository, replyRepository }) {
+  constructor({
+    threadRepository, commentRepository, replyRepository, likeRepository,
+  }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
+    this._likeRepository = likeRepository;
   }
 
   async execute(useCasePayload) {
@@ -14,9 +17,11 @@ class GetThreadUseCase {
       ...thread,
       comments: (await Promise.all(comments.map(async (comment) => {
         const replies = await this._replyRepository.getRepliesByCommentId(comment.id);
+        const likeCount = await this._likeRepository.getLikesByCommentId(comment.id);
 
         return {
           ...comment,
+          likeCount,
           replies,
         };
       }))),
