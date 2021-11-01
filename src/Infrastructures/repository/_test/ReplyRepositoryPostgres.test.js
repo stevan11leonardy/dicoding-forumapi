@@ -37,11 +37,14 @@ describe('ReplyRepositoryPostgres', () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      await replyRepositoryPostgres.addReply(addReply);
+      const addedReply = await replyRepositoryPostgres.addReply(addReply);
 
       // Assert
       const replies = await RepliesTableTestHelper.findRepliesById('reply-123');
       expect(replies).toHaveLength(1);
+      expect(addedReply.id).toStrictEqual('reply-123');
+      expect(addedReply.content).toStrictEqual('content');
+      expect(addedReply.owner).toStrictEqual('user-123');
     });
   });
   describe('deleteReply function', () => {
@@ -97,11 +100,30 @@ describe('ReplyRepositoryPostgres', () => {
 
   describe('getRepliesByCommentId function', () => {
     it('should return comment replies', async () => {
+      await RepliesTableTestHelper.cleanTable();
+      const result = await RepliesTableTestHelper.addReplies({});
+
       const fakeIdGenerator = () => '123'; // stub!
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       const replies = await replyRepositoryPostgres.getRepliesByCommentId(commentId);
       expect(replies).toHaveLength(1);
+      expect(replies[0]).toStrictEqual({
+        id: 'reply-123',
+        content: 'content',
+        username: 'dicoding',
+        date: result.date,
+      });
+    });
+    it('should return deleted comment replies', async () => {
+      const fakeIdGenerator = () => '123'; // stub!
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+
+      await replyRepositoryPostgres.deleteReply('reply-123');
+
+      const replies = await replyRepositoryPostgres.getRepliesByCommentId(commentId);
+      expect(replies).toHaveLength(1);
+      expect(replies[0].content).toEqual('**balasan telah dihapus**');
     });
   });
 });

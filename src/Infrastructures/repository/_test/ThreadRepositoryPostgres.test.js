@@ -31,11 +31,14 @@ describe('ThreadRepositoryPostgres', () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      await threadRepositoryPostgres.addThread(addThread);
+      const addedThread = await threadRepositoryPostgres.addThread(addThread);
 
       // Assert
       const threads = await ThreadsTableTestHelper.findThreadsById('thread-123');
       expect(threads).toHaveLength(1);
+      expect(addedThread.id).toStrictEqual('thread-123');
+      expect(addedThread.title).toStrictEqual('title');
+      expect(addedThread.owner).toStrictEqual('user-123');
     });
   });
   describe('checkAvailabilityThread function', () => {

@@ -35,11 +35,14 @@ describe('CommentRepositoryPostgres', () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      await commentRepositoryPostgres.addComment(addComment);
+      const addedComment = await commentRepositoryPostgres.addComment(addComment);
 
       // Assert
       const comments = await CommentsTableTestHelper.findCommentsById('comment-123');
       expect(comments).toHaveLength(1);
+      expect(addedComment.id).toStrictEqual('comment-123');
+      expect(addedComment.content).toStrictEqual('content');
+      expect(addedComment.owner).toStrictEqual('user-123');
     });
   });
   describe('deleteComment function', () => {
@@ -106,13 +109,31 @@ describe('CommentRepositoryPostgres', () => {
 
   describe('getCommentsByThreadId function', () => {
     it('should return thread comments', async () => {
-      await CommentsTableTestHelper.addComment({});
+      const result = await CommentsTableTestHelper.addComment({});
 
       const fakeIdGenerator = () => '123'; // stub!
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       const comments = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
       expect(comments).toHaveLength(1);
+      expect(comments[0]).toStrictEqual({
+        id: 'comment-123',
+        content: 'content',
+        username: 'dicoding',
+        date: result.date,
+      });
+    });
+    it('should return thread comments with content delete', async () => {
+      await CommentsTableTestHelper.addComment({});
+
+      const fakeIdGenerator = () => '123'; // stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+
+      await commentRepositoryPostgres.deleteComment('comment-123');
+
+      const comments = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
+      expect(comments).toHaveLength(1);
+      expect(comments[0].content).toEqual('**komentar telah dihapus**');
     });
   });
 });

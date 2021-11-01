@@ -12,13 +12,30 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async getRepliesByCommentId(commentId) {
     const query = {
-      text: 'SELECT replies.id, date, content, username FROM replies INNER JOIN users ON replies.owner_id = users.id where comment_id = $1 ORDER BY date ASC',
+      text: 'SELECT replies.id, date, content, username, is_delete FROM replies INNER JOIN users ON replies.owner_id = users.id where comment_id = $1 ORDER BY date ASC',
       values: [commentId],
     };
 
     const result = await this._pool.query(query);
 
-    return result.rows;
+    const replies = result.rows.map((reply) => {
+      const defaultReply = {
+        id: reply.id,
+        content: reply.content,
+        date: reply.date,
+        username: reply.username,
+      };
+      if (reply.is_delete) {
+        return {
+          ...defaultReply,
+          content: '**balasan telah dihapus**',
+        };
+      }
+
+      return defaultReply;
+    });
+
+    return replies;
   }
 
   async checkAvailabilityReply(replyId) {
@@ -68,7 +85,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async deleteReply(replyId) {
     const query = {
-      text: "UPDATE replies SET is_delete = true, content = '**balasan telah dihapus**' where id = $1",
+      text: 'UPDATE replies SET is_delete = true where id = $1',
       values: [replyId],
     };
 

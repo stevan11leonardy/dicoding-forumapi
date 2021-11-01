@@ -11,11 +11,13 @@ const CommentsTableTestHelper = {
     isDelete = false,
   }) {
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5, $6)',
+      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
       values: [id, ownerId, threadId, content, date, isDelete],
     };
 
-    await pool.query(query);
+    const result = await pool.query(query);
+
+    return result.rows[0];
   },
 
   async findCommentsById(id) {

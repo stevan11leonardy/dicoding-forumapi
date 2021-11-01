@@ -11,13 +11,30 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getCommentsByThreadId(threadId) {
     const query = {
-      text: 'SELECT comments.id, date, content, username FROM comments INNER JOIN users ON comments.owner_id = users.id where thread_id = $1 ORDER BY date ASC',
+      text: 'SELECT comments.id, date, content, username, is_delete FROM comments INNER JOIN users ON comments.owner_id = users.id where thread_id = $1 ORDER BY date ASC',
       values: [threadId],
     };
 
     const result = await this._pool.query(query);
 
-    return result.rows;
+    const comments = result.rows.map((comment) => {
+      const defaultComment = {
+        id: comment.id,
+        content: comment.content,
+        date: comment.date,
+        username: comment.username,
+      };
+      if (comment.is_delete) {
+        return {
+          ...defaultComment,
+          content: '**komentar telah dihapus**',
+        };
+      }
+
+      return defaultComment;
+    });
+
+    return comments;
   }
 
   async checkAvailabilityComment(commentId) {
@@ -67,7 +84,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async deleteComment(commentId) {
     const query = {
-      text: "UPDATE comments SET is_delete = true, content = '**komentar telah dihapus**' where id = $1",
+      text: 'UPDATE comments SET is_delete = true where id = $1',
       values: [commentId],
     };
 
