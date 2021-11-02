@@ -113,17 +113,8 @@ describe('ReplyRepositoryPostgres', () => {
         content: 'content',
         username: 'dicoding',
         date: result.date,
+        is_delete: false,
       });
-    });
-    it('should return deleted comment replies', async () => {
-      const fakeIdGenerator = () => '123'; // stub!
-      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
-
-      await replyRepositoryPostgres.deleteReply('reply-123');
-
-      const replies = await replyRepositoryPostgres.getRepliesByCommentId(commentId);
-      expect(replies).toHaveLength(1);
-      expect(replies[0].content).toEqual('**balasan telah dihapus**');
     });
   });
 });

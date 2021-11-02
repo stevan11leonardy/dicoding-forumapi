@@ -18,24 +18,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const result = await this._pool.query(query);
 
-    const replies = result.rows.map((reply) => {
-      const defaultReply = {
-        id: reply.id,
-        content: reply.content,
-        date: reply.date,
-        username: reply.username,
-      };
-      if (reply.is_delete) {
-        return {
-          ...defaultReply,
-          content: '**balasan telah dihapus**',
-        };
-      }
-
-      return defaultReply;
-    });
-
-    return replies;
+    return result.rows;
   }
 
   async checkAvailabilityReply(replyId) {
