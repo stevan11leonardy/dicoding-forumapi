@@ -105,6 +105,7 @@ describe('GetThreadUseCase', () => {
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledTimes(1);
+    expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(comment.id);
   });
 
   it('should orchestrating the get thread action correctly when there is a comment and a reply', async () => {
@@ -168,6 +169,7 @@ describe('GetThreadUseCase', () => {
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledTimes(1);
+    expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(comment.id);
   });
 
   it('should orchestrating the get thread action correctly when there is a deleted comment', async () => {
@@ -223,6 +225,7 @@ describe('GetThreadUseCase', () => {
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledTimes(1);
+    expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(comment.id);
   });
 
   it('should orchestrating the get thread action correctly when there is a deleted comment and a deleted reply', async () => {
@@ -292,5 +295,6 @@ describe('GetThreadUseCase', () => {
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledTimes(1);
+    expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(comment.id);
   });
 });

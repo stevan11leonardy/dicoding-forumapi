@@ -59,6 +59,8 @@ describe('DeleteReplyUseCase', () => {
     await expect(deleteReplyUseCase.execute(useCasePayload))
       .rejects
       .toThrowError('REPLY_REPOSITORY.PAYLOAD_NOT_FOUND');
+    expect(mockReplyRepository.checkAvailabilityReply)
+      .toBeCalledWith(useCasePayload.replyId);
   });
 
   it('should throw error if use case payload given owner id not authorized', async () => {
@@ -82,6 +84,10 @@ describe('DeleteReplyUseCase', () => {
     await expect(deleteReplyUseCase.execute(useCasePayload))
       .rejects
       .toThrowError('REPLY_REPOSITORY.PAYLOAD_FORBIDDEN');
+    expect(mockReplyRepository.checkAvailabilityReply)
+      .toBeCalledWith(useCasePayload.replyId);
+    expect(mockReplyRepository.checkOwnership)
+      .toBeCalledWith(useCasePayload.replyId, useCasePayload.ownerId);
   });
 
   it('should orchestrating the delete comment action correctly', async () => {
