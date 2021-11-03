@@ -1,8 +1,8 @@
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
-const CommentRepository = require('../../../Domains/comments/CommentRepository');
-const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
+const CommentRepository = require('../../../../Domains/comments/CommentRepository');
+const ReplyRepository = require('../../../../Domains/replies/ReplyRepository');
 const AddReplyUseCase = require('../AddReplyUseCase');
-const NewReply = require('../../../Domains/replies/entities/NewReply');
+const NewReply = require('../../../../Domains/replies/entities/NewReply');
 
 describe('AddReplyUseCase', () => {
   it('should throw error if use case payload given comment id not found', async () => {

@@ -9,7 +9,7 @@ class NewReply {
 
   _verifyPayload(payload) {
     const {
-      ownerId, threadId, commentId, content,
+      ownerId, commentId, content,
     } = payload;
 
     if (!ownerId) {

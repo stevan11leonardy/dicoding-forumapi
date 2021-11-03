@@ -27,17 +27,17 @@ const LikeRepository = require('../Domains/likes/LikeRepository');
 const LikeRepositoryPostgres = require('./repository/LikeRepositoryPostgres');
 
 // use case
-const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
-const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
-const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
-const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
-const AddThreadUseCase = require('../Applications/use_case/AddThreadUseCase');
-const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
-const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
-const GetThreadUseCase = require('../Applications/use_case/GetThreadUseCase');
-const AddReplyUseCase = require('../Applications/use_case/AddReplyUseCase');
-const DeleteReplyUseCase = require('../Applications/use_case/DeleteReplyUseCase');
-const LikeCommentUseCase = require('../Applications/use_case/LikeCommentUseCase');
+const AddUserUseCase = require('../Applications/use_case/users/AddUserUseCase');
+const LoginUserUseCase = require('../Applications/use_case/authentications/LoginUserUseCase');
+const LogoutUserUseCase = require('../Applications/use_case/authentications/LogoutUserUseCase');
+const RefreshAuthenticationUseCase = require('../Applications/use_case/authentications/RefreshAuthenticationUseCase');
+const AddThreadUseCase = require('../Applications/use_case/threads/AddThreadUseCase');
+const AddCommentUseCase = require('../Applications/use_case/comments/AddCommentUseCase');
+const DeleteCommentUseCase = require('../Applications/use_case/comments/DeleteCommentUseCase');
+const GetThreadUseCase = require('../Applications/use_case/threads/GetThreadUseCase');
+const AddReplyUseCase = require('../Applications/use_case/replies/AddReplyUseCase');
+const DeleteReplyUseCase = require('../Applications/use_case/replies/DeleteReplyUseCase');
+const LikeCommentUseCase = require('../Applications/use_case/likes/LikeCommentUseCase');
 
 // creating container
 const container = createContainer();

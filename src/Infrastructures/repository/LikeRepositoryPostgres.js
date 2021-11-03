@@ -15,21 +15,20 @@ class LikeRepositoryPostgres extends LikeRepository {
 
     const result = await this._pool.query(query);
 
-    if (result.rowCount > 0) {
-      return true;
+    if (!result.rowCount) {
+      return false;
     }
 
-    return false;
+    return true;
   }
 
   async addLike(newLike) {
     const { ownerId, commentId } = newLike;
     const id = `like-${this._idGenerator()}`;
-    const date = new Date().toISOString();
 
     const query = {
-      text: 'INSERT INTO likes VALUES($1, $2, $3, $4)',
-      values: [id, ownerId, commentId, date],
+      text: 'INSERT INTO likes VALUES($1, $2, $3)',
+      values: [id, ownerId, commentId],
     };
 
     await this._pool.query(query);

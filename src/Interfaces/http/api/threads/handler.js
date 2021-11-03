@@ -1,10 +1,10 @@
-const AddCommentUseCase = require('../../../../Applications/use_case/AddCommentUseCase');
-const AddReplyUseCase = require('../../../../Applications/use_case/AddReplyUseCase');
-const AddThreadUseCase = require('../../../../Applications/use_case/AddThreadUseCase');
-const DeleteCommentUseCase = require('../../../../Applications/use_case/DeleteCommentUseCase');
-const DeleteReplyUseCase = require('../../../../Applications/use_case/DeleteReplyUseCase');
-const GetThreadUseCase = require('../../../../Applications/use_case/GetThreadUseCase');
-const LikeCommentUseCase = require('../../../../Applications/use_case/LikeCommentUseCase');
+const AddCommentUseCase = require('../../../../Applications/use_case/comments/AddCommentUseCase');
+const AddReplyUseCase = require('../../../../Applications/use_case/replies/AddReplyUseCase');
+const AddThreadUseCase = require('../../../../Applications/use_case/threads/AddThreadUseCase');
+const DeleteCommentUseCase = require('../../../../Applications/use_case/comments/DeleteCommentUseCase');
+const DeleteReplyUseCase = require('../../../../Applications/use_case/replies/DeleteReplyUseCase');
+const GetThreadUseCase = require('../../../../Applications/use_case/threads/GetThreadUseCase');
+const LikeCommentUseCase = require('../../../../Applications/use_case/likes/LikeCommentUseCase');
 
 class ThreadsHandler {
   constructor(container) {
