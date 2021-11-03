@@ -24,6 +24,8 @@ describe('AddCommentUseCase', () => {
     await expect(addCommentUseCase.execute(useCasePayload))
       .rejects
       .toThrowError('THREAD_REPOSITORY.PAYLOAD_NOT_FOUND');
+    expect(mockThreadRepository.checkAvailabilityThread)
+      .toBeCalledWith(useCasePayload.threadId);
   });
   it('should orchestrating the add comment action correctly', async () => {
     // Arrange

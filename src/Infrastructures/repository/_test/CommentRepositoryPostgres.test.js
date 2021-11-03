@@ -121,19 +121,8 @@ describe('CommentRepositoryPostgres', () => {
         content: 'content',
         username: 'dicoding',
         date: result.date,
+        is_delete: false,
       });
-    });
-    it('should return thread comments with content delete', async () => {
-      await CommentsTableTestHelper.addComment({});
-
-      const fakeIdGenerator = () => '123'; // stub!
-      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
-
-      await commentRepositoryPostgres.deleteComment('comment-123');
-
-      const comments = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
-      expect(comments).toHaveLength(1);
-      expect(comments[0].content).toEqual('**komentar telah dihapus**');
     });
   });
 });

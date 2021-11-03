@@ -17,24 +17,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const result = await this._pool.query(query);
 
-    const comments = result.rows.map((comment) => {
-      const defaultComment = {
-        id: comment.id,
-        content: comment.content,
-        date: comment.date,
-        username: comment.username,
-      };
-      if (comment.is_delete) {
-        return {
-          ...defaultComment,
-          content: '**komentar telah dihapus**',
-        };
-      }
-
-      return defaultComment;
-    });
-
-    return comments;
+    return result.rows;
   }
 
   async checkAvailabilityComment(commentId) {
