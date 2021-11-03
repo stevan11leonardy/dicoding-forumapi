@@ -82,7 +82,7 @@ describe('/threads endpoint', () => {
     });
   });
 
-  describe('when POST /threads/{theardId}/comments', () => {
+  describe('when POST /threads/{threadId}/comments', () => {
     it('should response 201 and persisted comment', async () => {
       const requestPayload = {
         content: 'content',
@@ -106,7 +106,7 @@ describe('/threads endpoint', () => {
     });
   });
 
-  describe('when DELETE /threads/{theardId}/comments', () => {
+  describe('when DELETE /threads/{threadId}/comments', () => {
     it('should response 200 and return status success', async () => {
       const response = await server.inject({
         method: 'DELETE',
@@ -122,7 +122,23 @@ describe('/threads endpoint', () => {
     });
   });
 
-  describe('when POST /threads/{theardId}/comments/{commentId}/replies', () => {
+  describe('when PUT /threads/{threadId}/comments/{commentId}/likes', () => {
+    it('should response 201 and persisted like', async () => {
+      const response = await server.inject({
+        method: 'PUT',
+        url: `/threads/${threadId}/comments/${commentId}/likes`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+    });
+  });
+
+  describe('when POST /threads/{threadId}/comments/{commentId}/replies', () => {
     it('should response 201 and persisted reply', async () => {
       const requestPayload = {
         content: 'content',
@@ -146,7 +162,7 @@ describe('/threads endpoint', () => {
     });
   });
 
-  describe('when DELETE /threads/{theardId}/comments/{commentId}/replies/{replyId}', () => {
+  describe('when DELETE /threads/{threadId}/comments/{commentId}/replies/{replyId}', () => {
     it('should response 200 and return status success', async () => {
       const response = await server.inject({
         method: 'DELETE',

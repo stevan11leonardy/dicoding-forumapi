@@ -28,7 +28,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const result = await this._pool.query(query);
 
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new NotFoundError('Komentar tidak tersedia');
     }
   }
@@ -49,11 +49,10 @@ class CommentRepositoryPostgres extends CommentRepository {
   async addComment(newComment) {
     const { content, ownerId, threadId } = newComment;
     const id = `comment-${this._idGenerator()}`;
-    const date = new Date().toISOString();
 
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5, $6)',
-      values: [id, ownerId, threadId, content, date, false],
+      text: 'INSERT INTO comments (id, owner_id, thread_id, content, is_delete) VALUES($1, $2, $3, $4, $5)',
+      values: [id, ownerId, threadId, content, false],
     };
 
     await this._pool.query(query);

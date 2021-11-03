@@ -1,6 +1,5 @@
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
-const CommentRepository = require('../../Domains/comments/CommentRepository');
 const ReplyRepository = require('../../Domains/replies/ReplyRepository');
 
 class ReplyRepositoryPostgres extends ReplyRepository {
@@ -29,7 +28,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const result = await this._pool.query(query);
 
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new NotFoundError('Balasan tidak tersedia');
     }
   }
@@ -53,8 +52,8 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const date = new Date().toISOString();
 
     const query = {
-      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5, $6)',
-      values: [id, ownerId, commentId, content, date, false],
+      text: 'INSERT INTO replies (id, owner_id, comment_id, content, is_delete) VALUES($1, $2, $3, $4, $5)',
+      values: [id, ownerId, commentId, content, false],
     };
 
     await this._pool.query(query);

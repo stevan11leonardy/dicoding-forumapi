@@ -1,4 +1,4 @@
-const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
+const ReplyRepository = require('../../../../Domains/replies/ReplyRepository');
 const DeleteReplyUseCase = require('../DeleteReplyUseCase');
 
 describe('DeleteReplyUseCase', () => {
